@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Consele.Calculator
+namespace Calculator
 {
     internal class Program
     {
