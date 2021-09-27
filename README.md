@@ -1,2 +1,2 @@
-# Consele.Calculator
-Ejemplo de proceso consola calculadora.
+# Console.Calculator
+Ejemplo de proceso calculadora en consola.
