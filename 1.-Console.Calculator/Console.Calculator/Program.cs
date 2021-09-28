@@ -18,9 +18,11 @@ namespace Calculator
 
             var command = args[0];
 
-            double.TryParse(args[1], out double value1);
+            double value1;
+            double.TryParse(args[1], out value1);
 
-            double.TryParse(args[2], out double value2);
+            double value2;
+            double.TryParse(args[2], out value2);
 
             switch (command)
             {
