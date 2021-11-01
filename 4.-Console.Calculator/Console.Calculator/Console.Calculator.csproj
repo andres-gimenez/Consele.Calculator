@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<FileUpgradeFlags>
+		</FileUpgradeFlags>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\Console.Calculator.Process\bin\Debug\net5.0\Console.Calculator.Process.runtimeconfig.json" Link="Console.Calculator.Process.runtimeconfig.json" >
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="..\Console.Calculator.Process\bin\Debug\net5.0\Console.Calculator.Process.dll" Link="Console.Calculator.Process.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="..\Console.Calculator.Process\bin\Debug\net5.0\Console.Calculator.Process.exe" Link="Console.Calculator.Process.exe">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="..\Console.Calculator.Process\bin\Debug\net5.0\Console.Calculator.Process.deps.json" Link="Console.Calculator.Process.deps.json" >
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>
