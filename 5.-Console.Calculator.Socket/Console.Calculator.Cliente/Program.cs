@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Calculator.Cliente
 {
@@ -35,11 +36,23 @@ namespace Calculator.Cliente
                     Console.WriteLine("Socket connected to {0}",
                         sender.RemoteEndPoint.ToString());
 
-                    // Encode the data string into a byte array.
-                    byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+                    for (int i = 10; i < 100; i++)
+                    {
+                        // Encode the data string into a byte array.
+                        byte[] msg1 = Encoding.ASCII.GetBytes($"This is a test{i}");
 
-                    // Send the data through the socket.
-                    int bytesSent = sender.Send(msg);
+                        // Send the data through the socket.
+                        int bytesSent1 = sender.Send(msg1);
+
+                        // Receive the response from the remote device.
+                        int bytesRec1 = sender.Receive(bytes);
+                        Console.WriteLine("Echoed test = {0}",
+                            Encoding.ASCII.GetString(bytes, 0, bytesRec1));
+
+                        Thread.Sleep(10);
+                    }
+                    byte[] msg2 = Encoding.ASCII.GetBytes("This is a test<EOF>");
+                    int bytesSent2 = sender.Send(msg2);
 
                     // Receive the response from the remote device.
                     int bytesRec = sender.Receive(bytes);

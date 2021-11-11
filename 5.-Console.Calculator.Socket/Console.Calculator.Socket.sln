@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console.Calculator.Cliente"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console.Calculator.Servidor", "Console.Calculator.Servidor\Console.Calculator.Servidor.csproj", "{195C1669-8EFD-42B3-AAD5-DFBC1A83A748}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console.Calculator", "Console.Calculator\Console.Calculator.csproj", "{CAF00454-8D44-43DF-967F-808766A6133D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{195C1669-8EFD-42B3-AAD5-DFBC1A83A748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{195C1669-8EFD-42B3-AAD5-DFBC1A83A748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{195C1669-8EFD-42B3-AAD5-DFBC1A83A748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAF00454-8D44-43DF-967F-808766A6133D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF00454-8D44-43DF-967F-808766A6133D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF00454-8D44-43DF-967F-808766A6133D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF00454-8D44-43DF-967F-808766A6133D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

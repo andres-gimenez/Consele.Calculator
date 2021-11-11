@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Calculator;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace Calculator.Servidor
 {
     internal class Program
     {
-        static int Main(string[] args)
+        static void Main(string[] args)
         {
             IPHostEntry host = Dns.GetHostEntry("localhost");
             IPAddress ipAddress = host.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
-            
+
             try
             {
 
@@ -25,27 +27,30 @@ namespace Calculator.Servidor
                 listener.Listen(10);
 
                 Console.WriteLine("Waiting for a connection...");
+                Console.WriteLine("Press F to finish...");
                 Socket handler = listener.Accept();
-
-                // Incoming data from the client.
-                string data = null;
-                byte[] bytes = null;
 
                 while (true)
                 {
-                    bytes = new byte[1024];
-                    int bytesRec = handler.Receive(bytes);
-                    data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                    if (data.IndexOf("<EOF>") > -1)
-                    {
+                    var cacheRec = new byte[4096];
+                    int bytesRec = handler.Receive(cacheRec);
+
+                    var jsonParametro = Encoding.UTF8.GetString(cacheRec, 0, bytesRec);
+                    var parametro = JsonSerializer.Deserialize<CalculadoraParametro>(jsonParametro);
+
+                    var resultado = Calculadora(parametro);
+
+                    var jsonResultado = JsonSerializer.Serialize<CalculadoraResultado>(resultado);
+
+                    var cacheEnvio = Encoding.UTF8.GetBytes(jsonResultado);
+                    handler.Send(cacheEnvio);
+
+                    var key = Console.ReadKey();
+
+                    if (key.Key == ConsoleKey.F)
                         break;
-                    }
                 }
 
-                Console.WriteLine("Text received : {0}", data);
-
-                byte[] msg = Encoding.ASCII.GetBytes(data);
-                handler.Send(msg);
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
             }
@@ -58,91 +63,133 @@ namespace Calculator.Servidor
             Console.ReadKey();
         }
 
-        static void aa()
-        { 
-            //System.Diagnostics.Debugger.Launch();
-
-            if(args.Length == 1 && args[0] == "--help")
+        static CalculadoraResultado Calculadora(CalculadoraParametro parametros)
+        {
+            switch (parametros.Operacion)
             {
-                ShowHelp();
-            }
-            else if(args.Length != 3)
-            {
-                ShowError();
-                return 1;
-            }
-
-            var command = args[0];
-
-            double.TryParse(args[1], out double value1);
-
-            double.TryParse(args[2], out double value2);
-
-            switch (command)
-            {
-                case "--add":
-                    Add(value1, value2);
-                    break;
-                case "--sub":
-                    Sub(value1, value2);
-                    break;
-                case "--plus":
-                    Plus(value1, value2);
-                    break;
-                case "--div":
-                    Div(value1, value2);
-                    break;
+                case Operacion.Suma:
+                    return Add(parametros.Operador1, parametros.Operador2);
+                case Operacion.Resta:
+                    return Sub(parametros.Operador1, parametros.Operador2);
+                case Operacion.Multiplicacion:
+                    return Plus(parametros.Operador1, parametros.Operador2);
+                case Operacion.Division:
+                    return Div(parametros.Operador1, parametros.Operador2);
                 default:
-                    ShowError();
-                    break;
+                    return new CalculadoraResultado
+                    {
+                        Operador1 = parametros.Operador1,
+                        Operador2 = parametros.Operador2,
+                        Operacion = parametros.Operacion,
+                        Error = $"Operación {parametros.Operacion} no soportada."
+                    };
             }
-
-            return 0;
         }
 
-        private static void Add(double a, double b)
+        private static CalculadoraResultado Add(double a, double b)
         {
-            Console.WriteLine($"{a:N} + {b:N} = {a + b:N}");
+            try
+            {
+                var resultado = a + b;
+
+                return new CalculadoraResultado
+                {
+                    Resultado = resultado,
+                    Operador1 = a,
+                    Operador2 = b
+                };
+            }
+            catch (Exception ex)
+            {
+                return new CalculadoraResultado
+                {
+                    Operador1 = a,
+                    Operador2 = b,
+                    Error = ex.Message
+                };
+            }
         }
 
-        private static void Sub(double a, double b)
+        private static CalculadoraResultado Sub(double a, double b)
         {
-            Console.WriteLine($"{a:N} - {b:N} = {a - b:N}");
+            var resultado = a - b;
+
+            try
+            {
+                return new CalculadoraResultado
+                {
+                    Resultado = resultado,
+                    Operador1 = a,
+                    Operador2 = b
+                };
+            }
+            catch (Exception ex)
+            {
+                return new CalculadoraResultado
+                {
+                    Operador1 = a,
+                    Operador2 = b,
+                    Error = ex.Message
+                };
+            }
         }
 
-        private static void Plus(double a, double b)
+        private static CalculadoraResultado Plus(double a, double b)
         {
-            Console.WriteLine($"{a:N} * {b:N} = {a * b:N}");
+            var resultado = a * b;
+
+            try
+            {
+                return new CalculadoraResultado
+                {
+                    Resultado = resultado,
+                    Operador1 = a,
+                    Operador2 = b
+                };
+            }
+            catch (Exception ex)
+            {
+                return new CalculadoraResultado
+                {
+                    Operador1 = a,
+                    Operador2 = b,
+                    Error = ex.Message
+                };
+            }
         }
 
-        private static void Div(double a, double b)
+        private static CalculadoraResultado Div(double a, double b)
         {
             if (b == 0.0)
-                throw new ArgumentException("No se dividir entre 0");
-                //Console.WriteLine("No se dividir entre 0");
-            else
-                Console.WriteLine($"{a:N} / {b:N} = {a / b:N}");
-        }
+            {
+                return new CalculadoraResultado
+                {
+                    Operador1 = a,
+                    Operador2 = b,
+                    Error = "No se puede dividir por cero."
+                };
+            }
 
-        private static void ShowError()
-        {
-            Console.Error.WriteLine("Error: linea de comando mal formada.");
-            Console.WriteLine("Error: linea de comando mal formada.");
-            ShowHelp();
-        }
+            var resultado = a / b;
 
-        private static void ShowHelp()
-        {
-            Console.WriteLine("USO:");
-
-            Console.WriteLine("ConsoleCalculator [comand] [value1] [value2]");
-
-            Console.WriteLine();
-
-            Console.WriteLine("donde");
-            Console.WriteLine("comand \t Comando add, sub, plus, div");
-            Console.WriteLine();
-
+            try
+            {
+                return new CalculadoraResultado
+                {
+                    Resultado = resultado,
+                    Operador1 = a,
+                    Operador2 = b
+                };
+            }
+            catch (Exception ex)
+            {
+                return new CalculadoraResultado
+                {
+                    Operador1 = a,
+                    Operador2 = b,
+                    Error = ex.Message
+                };
+            }
         }
     }
 }
