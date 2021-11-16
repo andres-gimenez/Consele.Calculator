@@ -27,7 +27,7 @@ namespace Calculator.Servidor
                 listener.Listen(10);
 
                 Console.WriteLine("Waiting for a connection...");
-                Console.WriteLine("Press F to finish...");
+                //Console.WriteLine("Press F to finish...");
                 Socket handler = listener.Accept();
 
                 while (true)
@@ -45,10 +45,10 @@ namespace Calculator.Servidor
                     var cacheEnvio = Encoding.UTF8.GetBytes(jsonResultado);
                     handler.Send(cacheEnvio);
 
-                    var key = Console.ReadKey();
+                    //var key = Console.ReadKey();
 
-                    if (key.Key == ConsoleKey.F)
-                        break;
+                    //if (key.Key == ConsoleKey.F)
+                    //    break;
                 }
 
                 handler.Shutdown(SocketShutdown.Both);
@@ -96,6 +96,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Suma,
                     Resultado = resultado,
                     Operador1 = a,
                     Operador2 = b
@@ -107,6 +108,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Suma,
                     Operador1 = a,
                     Operador2 = b,
                     Error = ex.Message
@@ -124,6 +126,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Resta,
                     Resultado = resultado,
                     Operador1 = a,
                     Operador2 = b
@@ -135,6 +138,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Resta,
                     Operador1 = a,
                     Operador2 = b,
                     Error = ex.Message
@@ -152,6 +156,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Multiplicacion,
                     Resultado = resultado,
                     Operador1 = a,
                     Operador2 = b
@@ -163,6 +168,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Multiplicacion,
                     Operador1 = a,
                     Operador2 = b,
                     Error = ex.Message
@@ -176,6 +182,7 @@ namespace Calculator.Servidor
             {
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Division,
                     Operador1 = a,
                     Operador2 = b,
                     Error = "No se puede dividir por cero."
@@ -188,6 +195,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Division,
                     Resultado = resultado,
                     Operador1 = a,
                     Operador2 = b
@@ -199,6 +207,7 @@ namespace Calculator.Servidor
 
                 return new CalculadoraResultado
                 {
+                    Operacion = Operacion.Division,
                     Operador1 = a,
                     Operador2 = b,
                     Error = ex.Message

@@ -13,5 +13,27 @@ namespace Calculator
         public double Resultado { get; set; }
 
         public string Error { get; set; }
+
+        public override string ToString()
+        {
+            var operacionString = string.Empty;
+            switch(Operacion)
+            {
+                case Operacion.Suma:
+                    operacionString = "+";
+                    break;
+                case Operacion.Resta:
+                    operacionString = "-";
+                    break;
+                case Operacion.Multiplicacion:
+                    operacionString = "*";
+                    break;
+                case Operacion.Division:
+                    operacionString = "/";
+                    break;
+            }
+
+            return $"{Operador1} {operacionString} {Operador2} = {Resultado}";
+        }
     }
 }
