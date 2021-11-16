@@ -92,6 +92,8 @@ namespace Calculator.Servidor
             {
                 var resultado = a + b;
 
+                Console.WriteLine($"{a} + {b} = {resultado}");
+
                 return new CalculadoraResultado
                 {
                     Resultado = resultado,
@@ -101,6 +103,8 @@ namespace Calculator.Servidor
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex.Message}");
+
                 return new CalculadoraResultado
                 {
                     Operador1 = a,
@@ -112,10 +116,12 @@ namespace Calculator.Servidor
 
         private static CalculadoraResultado Sub(double a, double b)
         {
-            var resultado = a - b;
-
             try
             {
+                var resultado = a - b;
+
+                Console.WriteLine($"{a} - {b} = {resultado}");
+
                 return new CalculadoraResultado
                 {
                     Resultado = resultado,
@@ -125,6 +131,8 @@ namespace Calculator.Servidor
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex.Message}");
+
                 return new CalculadoraResultado
                 {
                     Operador1 = a,
@@ -136,10 +144,12 @@ namespace Calculator.Servidor
 
         private static CalculadoraResultado Plus(double a, double b)
         {
-            var resultado = a * b;
-
             try
             {
+                var resultado = a * b;
+
+                Console.WriteLine($"{a} * {b} = {resultado}");
+
                 return new CalculadoraResultado
                 {
                     Resultado = resultado,
@@ -149,6 +159,8 @@ namespace Calculator.Servidor
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex.Message}");
+
                 return new CalculadoraResultado
                 {
                     Operador1 = a,
@@ -170,10 +182,10 @@ namespace Calculator.Servidor
                 };
             }
 
-            var resultado = a / b;
-
             try
             {
+                var resultado = a / b;
+
                 return new CalculadoraResultado
                 {
                     Resultado = resultado,
@@ -183,6 +195,8 @@ namespace Calculator.Servidor
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex.Message}");
+
                 return new CalculadoraResultado
                 {
                     Operador1 = a,
