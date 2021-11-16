@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 
 namespace Calculator.Servidor
 {
@@ -28,31 +29,37 @@ namespace Calculator.Servidor
 
                 Console.WriteLine("Waiting for a connection...");
                 //Console.WriteLine("Press F to finish...");
-                Socket handler = listener.Accept();
+                
 
                 while (true)
                 {
+                    Socket handler = listener.Accept();
                     var cacheRec = new byte[4096];
                     int bytesRec = handler.Receive(cacheRec);
 
-                    var jsonParametro = Encoding.UTF8.GetString(cacheRec, 0, bytesRec);
-                    var parametro = JsonSerializer.Deserialize<CalculadoraParametro>(jsonParametro);
+                    if (bytesRec > 0)
+                    {
+                        var jsonParametro = Encoding.UTF8.GetString(cacheRec, 0, bytesRec);
+                        var parametro = JsonSerializer.Deserialize<CalculadoraParametro>(jsonParametro);
 
-                    var resultado = Calculadora(parametro);
+                        var resultado = Calculadora(parametro);
 
-                    var jsonResultado = JsonSerializer.Serialize<CalculadoraResultado>(resultado);
+                        var jsonResultado = JsonSerializer.Serialize<CalculadoraResultado>(resultado);
 
-                    var cacheEnvio = Encoding.UTF8.GetBytes(jsonResultado);
-                    handler.Send(cacheEnvio);
+                        var cacheEnvio = Encoding.UTF8.GetBytes(jsonResultado);
+                        handler.Send(cacheEnvio);
+                        Thread.Sleep(0);
+                    }
 
                     //var key = Console.ReadKey();
 
                     //if (key.Key == ConsoleKey.F)
                     //    break;
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
                 }
 
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                
             }
             catch (Exception e)
             {
@@ -192,6 +199,8 @@ namespace Calculator.Servidor
             try
             {
                 var resultado = a / b;
+
+                Console.WriteLine($"{a} / {b} = {resultado}");
 
                 return new CalculadoraResultado
                 {
