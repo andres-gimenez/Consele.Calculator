@@ -78,7 +78,7 @@ namespace Calculator
 
             if (process.ExitCode == 0)
             {
-                Console.WriteLine("El proceso ha finalizado.");
+                Console.WriteLine("El proceso finalizo con exito.");
                 Console.WriteLine(outputWriter.ReadToEnd());
             }
             else
