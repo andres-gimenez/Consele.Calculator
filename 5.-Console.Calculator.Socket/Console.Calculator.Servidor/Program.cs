@@ -1,5 +1,4 @@
-﻿using Calculator;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -58,8 +57,6 @@ namespace Calculator.Servidor
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
                 }
-
-                
             }
             catch (Exception e)
             {
