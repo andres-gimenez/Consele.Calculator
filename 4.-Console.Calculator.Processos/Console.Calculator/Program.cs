@@ -60,12 +60,14 @@ namespace Calculator
 
         private static void CallChildrenProcess(string commandLine)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @".\Console.Calculator.Process.exe";
-            startInfo.Arguments = commandLine;
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardError = true;
-            startInfo.RedirectStandardOutput = true;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = @".\Console.Calculator.Process.exe",
+                Arguments = commandLine,
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
 
             using Process process = Process.Start(startInfo);
 
@@ -76,7 +78,7 @@ namespace Calculator
 
             if (process.ExitCode == 0)
             {
-                Console.WriteLine("El proceso finalizó con exito.");
+                Console.WriteLine("El proceso finalizo con exito.");
                 Console.WriteLine(outputWriter.ReadToEnd());
             }
             else
