@@ -65,7 +65,6 @@ namespace Calculator
         {
             if (b == 0.0)
                 throw new ArgumentException("No se dividir entre 0");
-                //Console.WriteLine("No se dividir entre 0");
             else
                 Console.WriteLine($"{a:N} / {b:N} = {a / b:N}");
         }
